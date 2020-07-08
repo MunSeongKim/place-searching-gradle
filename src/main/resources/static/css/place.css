@@ -1,0 +1,35 @@
+div.header {
+    background-color: #ffcd36;
+    color: #302A24ee;
+}
+
+button#btn-search {
+  color: #302A24;
+  background-color: #ffcd36;
+  border-color: #ffcd36;
+}
+
+button#btn-search:hover {
+  color: #f7fbfd;
+  background-color: #302A24;
+  border-color: #302A24;
+}
+
+.keyword-item-container:hover {
+  box-shadow: 0px 0px 10px 3px #ddd;
+  border-radius: 10px 10px;
+}
+
+.keyword-item-container:hover span.keyword-item-badge {
+  color: #f7fbfd;
+  background-color: #302A24;
+  border-color: #302A24;
+}
+
+.keyword-item-container:hover p.keyword-item-body {
+  border-bottom-color: #fff;
+}
+
+.map-container {
+    height:300px;
+}

@@ -1,10 +1,13 @@
 plugins {
 	id 'org.springframework.boot' version '2.3.1.RELEASE'
-	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
-	id 'java'
+//	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+//	id 'java'
 }
 
-group = 'com.mskim12.search.place'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'java'
+
+group = 'com.mskim.search.place'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
@@ -23,6 +26,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-mustache'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'com.google.code.findbugs:jsr305:3.0.2'
+
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'
 	annotationProcessor 'org.projectlombok:lombok'
@@ -34,4 +39,9 @@ dependencies {
 
 test {
 	useJUnitPlatform()
+}
+
+compileJava {
+	options.encoding = 'UTF-8'
+	options.compilerArgs << "-Xlint:unchecked"
 }
