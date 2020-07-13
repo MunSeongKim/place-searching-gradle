@@ -55,9 +55,6 @@ compileJava {
 test {
 	// use JUnit5
 	useJUnitPlatform()
-
-	reports.html.enabled = false
-	testLogging.showStandardStreams = true
 }
 
 jar {
@@ -65,7 +62,10 @@ jar {
 }
 
 bootJar {
+
 	enabled = true
 	mainClassName = "com.mskim.search.place.PlaceSearchingApplication"
 	destinationDirectory = file(project.buildDir)
 }
+
+bootJar.dependsOn test
