@@ -1,6 +1,7 @@
 package com.mskim.search.place.app.place.controller;
 
 import com.mskim.search.place.app.place.service.PlaceService;
+import com.mskim.search.place.app.place.service.interfaces.PlaceSearchableStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -31,10 +32,13 @@ public class PlaceController {
     @GetMapping("/search")
     public ModelAndView search(@RequestParam(name = "query") String placeName,
                                @RequestParam(name = "page", required = false, defaultValue = "1") int page,
+                               @RequestParam(name = "engine", required = false, defaultValue = "kakao") String strategy,
                                HttpServletRequest request) {
         HttpSession session = request.getSession(true);
         session.setAttribute("keyword", placeName);
         session.setAttribute("page", page);
+
+        this.placeService.applyStrategy(strategy);
 
         return new ModelAndView("place/index", "result_place", this.placeService.retrievePlace(placeName, page));
     }

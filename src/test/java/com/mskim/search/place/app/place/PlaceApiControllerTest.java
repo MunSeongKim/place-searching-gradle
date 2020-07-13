@@ -38,7 +38,7 @@ class PlaceApiControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private PlaceService placeService;
+    private PlaceService kakaoPlaceService;
     @Mock
     private MockHttpSession httpSession;
 
@@ -57,7 +57,7 @@ class PlaceApiControllerTest {
     @WithMockUser
     void PlaceApiController_장소_상세_조회() throws Exception {
         // given
-        given(placeService.retrievePlaceDetail(eq(placeId), any()))
+        given(kakaoPlaceService.retrievePlaceDetail(eq(placeId), any()))
                 .willReturn(Place.builder().build());
 
         // when

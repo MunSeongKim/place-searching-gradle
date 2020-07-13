@@ -37,7 +37,7 @@ class SecurityConfigureTest {
     @MockBean
     private AuthRepository authRepository;
     @MockBean
-    private PlaceService placeService;
+    private PlaceService kakaoPlaceService;
 
     @Test
     void SecurityConfigure_로그인_페이지로_리다이렉션() throws Exception {

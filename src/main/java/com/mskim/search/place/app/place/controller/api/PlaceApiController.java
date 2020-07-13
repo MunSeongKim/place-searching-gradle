@@ -2,6 +2,7 @@ package com.mskim.search.place.app.place.controller.api;
 
 import com.mskim.search.place.app.place.dto.Place;
 import com.mskim.search.place.app.place.service.PlaceService;
+import com.mskim.search.place.app.place.service.interfaces.PlaceSearchableStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +24,7 @@ public class PlaceApiController {
     }
 
     @GetMapping(value = "/{id}", produces = "application/json;charset=UTF-8")
-    public Place getOnePlace(@PathVariable("id") int placeId, HttpServletRequest request) {
+    public Place getPlaceById(@PathVariable("id") int placeId, HttpServletRequest request) {
         return this.placeService.retrievePlaceDetail(placeId, request.getSession());
     }
 }

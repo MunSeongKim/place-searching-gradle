@@ -5,6 +5,7 @@ import com.mskim.search.place.app.keyword.service.KeywordService;
 import com.mskim.search.place.app.place.dto.Place;
 import com.mskim.search.place.app.place.dto.PlaceDto;
 import com.mskim.search.place.app.place.service.PlaceService;
+import com.mskim.search.place.app.place.service.strategy.KakaoSearchStrategy;
 import com.mskim.search.place.app.place.support.client.KakaoMapSearchRestClient;
 import com.mskim.search.place.support.SampleApiResponseMaker;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,7 +30,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-@SpringBootTest(classes = PlaceService.class)
+@SpringBootTest(classes = { KakaoSearchStrategy.class, PlaceService.class })
 class PlaceServiceTest {
     @Autowired
     private PlaceService placeService;

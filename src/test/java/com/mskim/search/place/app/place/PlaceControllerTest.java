@@ -31,7 +31,7 @@ class PlaceControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private PlaceService placeService;
+    private PlaceService kakaoPlaceService;
 
     private String placeName;
     private int[] page;
@@ -63,7 +63,7 @@ class PlaceControllerTest {
         // given
         // setUp()
         PlaceDto placeDto = PlaceDto.builder().build();
-        given(placeService.retrievePlace(placeName, page[0]))
+        given(kakaoPlaceService.retrievePlace(placeName, page[0]))
                 .willReturn(placeDto);
 
         // when
@@ -87,7 +87,7 @@ class PlaceControllerTest {
         // given
         // setUp()
         PlaceDto placeDto = PlaceDto.builder().build();
-        given(placeService.retrievePlace(placeName, page[1]))
+        given(kakaoPlaceService.retrievePlace(placeName, page[1]))
                 .willReturn(placeDto);
 
         // when

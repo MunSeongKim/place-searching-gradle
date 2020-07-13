@@ -3,19 +3,15 @@
 
 ## Requirements
 애플리케이션 빌드 또는 실행을 위한 요구 조건:
-- gradle wrapper를 사용하여 별도의 요구 사항은 없습니다.
-- wrapper를 사용하지 않을 경우 아래의 조건을 따릅니다.
-    - JDK 1.8
-    - Gradle 6.4.1
+- JDK 1.8
+- Gradle 6.4.1
 
 ## Running the application locally
 로컬에서 실행 방법
-> 아래 내용은 차후 수정 예정
-```
 1. IDE 사용
     - `com.mskim.search.place.PlaceSearchingApplication.main()` 실행
-2. Maven 사용
-    - `mvn spring-boot:run`
+2. gradle 사용
+    - `gradle bootRun`
 > 1, 2번의 방법이 불가능 할 경우 아래의 방법으로 실행하시면 됩니다.
 >
 > [place-searching.jar download](https://github.com/MunSeongKim/place-searching/raw/master/dist/place-searching-0.1.0-SNAPSHOT.jar) 후
@@ -24,7 +20,7 @@
 > 해당 방법은 `JRE 1.8` 이상이 설치가 필요합니다.
     
 - 실행 후 http://localhost:8080 으로 접속 가능합니다.
-```
+
 ## How to use of service
 1. 로그인
     - `default 계정`(munseong.kim:test)로 접속
