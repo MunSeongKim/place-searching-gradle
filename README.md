@@ -14,7 +14,7 @@
     - `gradle bootRun`
 > 1, 2번의 방법이 불가능 할 경우 아래의 방법으로 실행하시면 됩니다.
 >
-> [place-searching.jar download](https://github.com/MunSeongKim/place-searching/raw/master/dist/place-searching-0.1.0-SNAPSHOT.jar) 후
+> [place-searching.jar download](https://github.com/MunSeongKim/place-searching-gradle/raw/master/dist/place-searching-0.0.1-SNAPSHOT.jar) 후
 > `java -jar place-searching-0.0.1-SNAPSHOT.jar`로 실행합니다.
 >
 > 해당 방법은 `JRE 1.8` 이상이 설치가 필요합니다.
