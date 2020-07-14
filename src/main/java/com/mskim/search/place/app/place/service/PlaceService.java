@@ -5,6 +5,7 @@ import com.mskim.search.place.app.place.dto.Place;
 import com.mskim.search.place.app.place.dto.PlaceDto;
 import com.mskim.search.place.app.place.service.interfaces.PlaceSearchableStrategy;
 import com.mskim.search.place.app.place.service.strategy.KakaoSearchStrategy;
+import com.mskim.search.place.app.place.service.strategy.NaverSearchStrategy;
 import com.mskim.search.place.app.place.service.strategy.support.PlaceSearchStrategyConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -39,6 +40,9 @@ public class PlaceService {
         switch (strategyName) {
             case "kakao":
                 this.searchStrategy = (KakaoSearchStrategy) context.getBean("kakaoSearchStrategy");
+                break;
+            case "naver":
+                this.searchStrategy = (NaverSearchStrategy) context.getBean("naverSearchStrategy");
         }
     }
 

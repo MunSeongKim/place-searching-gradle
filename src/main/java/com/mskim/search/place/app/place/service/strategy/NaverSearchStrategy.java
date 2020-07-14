@@ -6,6 +6,7 @@ import com.mskim.search.place.app.place.dto.page.PlacePager;
 import com.mskim.search.place.app.place.service.interfaces.PlaceSearchableStrategy;
 import com.mskim.search.place.app.place.service.strategy.support.PlaceSearchCacheConstant;
 import com.mskim.search.place.app.place.support.client.KakaoMapSearchRestClient;
+import com.mskim.search.place.app.place.support.client.NaverMapSearchRestClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
@@ -19,32 +20,35 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class KakaoSearchStrategy implements PlaceSearchableStrategy {
-    private static final String SHORTCUT_URL_PREFIX = "https://map.kakao.com/link/map/";
+public class NaverSearchStrategy implements PlaceSearchableStrategy {
+    private static final String PLACE_CACHE_NAME = PlaceSearchCacheConstant.PLACE_CACHE_NAME.value();
+    private static final String PLACES_CACHE_NAME = PlaceSearchCacheConstant.PLACES_CACHE_NAME.value();
+
+    private static final String DISPLAY_COUNT = "5";
 
     private final CacheManager cacheManager;
-    private final KakaoMapSearchRestClient client;
+    private final NaverMapSearchRestClient client;
 
     private boolean isNewKeyword;
     private String keyword;
     private PlacePager placePager;
 
     @Autowired
-    public KakaoSearchStrategy(CacheManager cacheManager, KakaoMapSearchRestClient client) {
+    public NaverSearchStrategy(CacheManager cacheManager, NaverMapSearchRestClient client) {
         this.cacheManager = cacheManager;
         this.client = client;
+        placePager = initializePager();
     }
 
     @Override
     public Place searchById(int placeId, HttpSession session) {
-        Place place = cacheManager.getCache(PlaceSearchCacheConstant.PLACE_CACHE_NAME.value())
+        Place place = cacheManager.getCache(PLACE_CACHE_NAME)
                 .get(placeId, Place.class);
 
         if (session != null && place == null) {
             String keyword = session.getAttribute("keyword").toString();
-            int page = Integer.parseInt(session.getAttribute("page").toString());
-            List cacheData = cacheManager.getCache(PlaceSearchCacheConstant.PLACE_CACHE_NAME.value())
-                    .get(keyword + "_" + page, List.class);
+            List cacheData = cacheManager.getCache(PLACES_CACHE_NAME)
+                    .get(keyword, List.class);
             for (Object item : cacheData) {
                 if (item instanceof Place) {
                     Place placeItem = (Place) item;
@@ -62,7 +66,7 @@ public class KakaoSearchStrategy implements PlaceSearchableStrategy {
     public PlaceDto searchByPlaceName(String placeName, int page) {
         this.updateKeywordState(placeName);
 
-        List<Place> places = getPlacesFromApi(placeName, page);
+        List<Place> places = getPlacesFromApi(placeName);
 
         if (places.isEmpty()) {
             return PlaceDto.builder()
@@ -71,7 +75,6 @@ public class KakaoSearchStrategy implements PlaceSearchableStrategy {
                     .build();
         }
 
-        this.placePager = updatePager(placeName, page);
         int itemIndex = placePager.getStartItemNumber();
         for (Place place : places) {
             place.assignItemIndex(itemIndex++);
@@ -88,9 +91,9 @@ public class KakaoSearchStrategy implements PlaceSearchableStrategy {
         return isNewKeyword;
     }
 
-    private List<Place> getPlacesFromApi(String placeName, int page) {
-        String cacheItemKey = getPlacesCacheKey(placeName, page);
-        Cache cache = cacheManager.getCache(PlaceSearchCacheConstant.PLACES_CACHE_NAME.value());
+    private List<Place> getPlacesFromApi(String placeName) {
+        String cacheItemKey = getPlacesCacheKey(placeName);
+        Cache cache = cacheManager.getCache(PLACES_CACHE_NAME);
         List cachePlaces = cache.get(cacheItemKey, List.class);
 
         List<Place> places = new ArrayList<>();
@@ -104,7 +107,7 @@ public class KakaoSearchStrategy implements PlaceSearchableStrategy {
             return places;
         }
 
-        MultiValueMap<String, String> params = createParams(placeName, page);
+        MultiValueMap<String, String> params = createParams(placeName);
         Map response = (Map) client.setParams(params).getListAsEntity();
 
         places = parsePlaceApiResponse(response);
@@ -130,52 +133,31 @@ public class KakaoSearchStrategy implements PlaceSearchableStrategy {
                     .phone(item.get("phone"))
                     .longitude(Double.valueOf(item.get("x")))
                     .latitude(Double.valueOf(item.get("y")))
-                    .shortcutLink(SHORTCUT_URL_PREFIX + id)
+                    .shortcutLink("")
                     .build();
-            cacheManager.getCache(PlaceSearchCacheConstant.PLACE_CACHE_NAME.value()).put(id, place);
+            cacheManager.getCache(PLACE_CACHE_NAME).put(id, place);
             places.add(place);
         }
 
         return places;
     }
 
-    private MultiValueMap<String, String> createParams(String placeName, Integer page) {
+    private MultiValueMap<String, String> createParams(String placeName) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("query", placeName);
-        params.add("page", page.toString());
+        params.add("display", DISPLAY_COUNT);
 
         return params;
     }
 
-    private String getPlacesCacheKey(String keyword, int page) {
-        return keyword + "_" + page;
+    private String getPlacesCacheKey(String keyword) {
+        return keyword;
     }
 
-    @SuppressWarnings("unchecked")
-    private Map<String, Object> parseMetadata(Map response) {
-        return (Map<String, Object>) response.get("meta");
-    }
-
-    private PlacePager updatePager(String keyword, int page) {
-        if (isNewKeyword) {
-            return initializePager(keyword);
-        }
-
-        return this.placePager.update(page);
-    }
-
-    private PlacePager initializePager(String keyword) {
-        MultiValueMap<String, String> params = createParams(keyword, PlacePager.MAX_PAGE_COUNT);
-
-        // new pager
-        @SuppressWarnings("unchecked")
-        Map<String, Object> response = (Map) client.setParams(params).getListAsEntity();
-        Map<String, Object> meta = parseMetadata(response);
-
-        Integer totalItemCount = (Integer) meta.get("pageable_count");
-
+    private PlacePager initializePager() {
         return PlacePager.builder()
-                .totalItemCount(totalItemCount)
+                .displayItemCount(Integer.parseInt(DISPLAY_COUNT))
+                .totalItemCount(Integer.parseInt(DISPLAY_COUNT))
                 .build().update();
     }
 
