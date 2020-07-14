@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.Map;
 
-@Component
+@Component(value = "naverMapSearchRestClient")
 public class NaverMapSearchRestClient extends RestClientTemplate {
     private static final String NAVER_SEARCH_PLACE_PATH = "/v1/search/local.json";
 

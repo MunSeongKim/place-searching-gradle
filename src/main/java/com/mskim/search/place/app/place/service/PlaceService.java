@@ -20,29 +20,29 @@ public class PlaceService {
     private ApplicationContext context;
     private PlaceSearchableStrategy searchStrategy;
 
-    private String strategyName;
+    private PlaceSearchStrategyConstant strategyConstant;
 
 
     @Autowired
     public PlaceService(KeywordService keywordService, ApplicationContext context) {
         this.context = context;
         this.keywordService = keywordService;
-        this.searchStrategy = (KakaoSearchStrategy) context.getBean("kakaoSearchStrategy");
-        this.strategyName = PlaceSearchStrategyConstant.KAKAO.value();
+        this.strategyConstant = PlaceSearchStrategyConstant.KAKAO;
+        this.searchStrategy = (KakaoSearchStrategy) context.getBean(strategyConstant.toStrategyString());
     }
 
-    public void applyStrategy(String strategyName) {
-        if (this.strategyName.equals(strategyName)) {
+    public void applyStrategy(PlaceSearchStrategyConstant strategyType) {
+        if (this.strategyConstant == strategyType) {
             return;
         }
 
-        context.getBean("kakaoSearchStrategy");
-        switch (strategyName) {
-            case "kakao":
-                this.searchStrategy = (KakaoSearchStrategy) context.getBean("kakaoSearchStrategy");
+        switch (strategyType) {
+            case KAKAO:
+                this.searchStrategy = context.getBean(strategyConstant.toStrategyString(), KakaoSearchStrategy.class);
                 break;
-            case "naver":
-                this.searchStrategy = (NaverSearchStrategy) context.getBean("naverSearchStrategy");
+            case NAVER:
+                this.searchStrategy = context.getBean(strategyConstant.toStrategyString(), NaverSearchStrategy.class);;
+                break;
         }
     }
 

@@ -2,6 +2,7 @@ package com.mskim.search.place.app.place.controller;
 
 import com.mskim.search.place.app.place.service.PlaceService;
 import com.mskim.search.place.app.place.service.interfaces.PlaceSearchableStrategy;
+import com.mskim.search.place.app.place.service.strategy.support.PlaceSearchStrategyConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -38,10 +39,10 @@ public class PlaceController {
         session.setAttribute("keyword", placeName);
         session.setAttribute("page", page);
 
-        this.placeService.applyStrategy(strategy);
+        this.placeService.applyStrategy(PlaceSearchStrategyConstant.valueOfName(strategy));
 
-        return new ModelAndView("place/index", "result_place", this.placeService.retrievePlace(placeName, page));
+        return new ModelAndView("place/index",
+                "result_place",
+                this.placeService.retrievePlace(placeName, page));
     }
-
-
 }

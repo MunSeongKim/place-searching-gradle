@@ -34,9 +34,9 @@ public class NaverSearchStrategy implements PlaceSearchableStrategy {
     private PlacePager placePager;
 
     @Autowired
-    public NaverSearchStrategy(CacheManager cacheManager, NaverMapSearchRestClient client) {
+    public NaverSearchStrategy(CacheManager cacheManager, NaverMapSearchRestClient naverMapSearchRestclient) {
         this.cacheManager = cacheManager;
-        this.client = client;
+        this.client = naverMapSearchRestclient;
         placePager = initializePager();
     }
 

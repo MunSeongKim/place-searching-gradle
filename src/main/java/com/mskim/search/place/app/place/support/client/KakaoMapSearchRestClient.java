@@ -5,10 +5,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.meta.TypeQualifierNickname;
 import java.util.HashMap;
 import java.util.Map;
 
-@Component
+@Component(value = "kakaoMapSearchRestClient")
 public class KakaoMapSearchRestClient extends RestClientTemplate {
     private static final String KAKAO_SEARCH_PLACE_PATH = "/v2/local/search/keyword.json";
 

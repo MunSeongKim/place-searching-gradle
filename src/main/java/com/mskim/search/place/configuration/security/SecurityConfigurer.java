@@ -3,7 +3,6 @@ package com.mskim.search.place.configuration.security;
 import com.mskim.search.place.app.auth.domain.Member;
 import com.mskim.search.place.app.auth.repository.AuthRepository;
 import com.mskim.search.place.configuration.security.support.Role;
-import com.mskim.search.place.configuration.security.support.SecurityConstant;
 import com.mskim.search.place.configuration.security.support.SignInFailureHandler;
 import com.mskim.search.place.configuration.security.support.SignInSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +28,12 @@ import java.util.Set;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
-    private static final String LOGIN_URL_PATH = SecurityConstant.SECURITY_LOGIN_URL_PATH.getValue();
-    private static final String LOGIN_PROCESS_URL_PATH = SecurityConstant.SECURITY_LOGIN_PROCESS_URL_PATH.getValue();
-    private static final String LOGOUT_URL_PATH = SecurityConstant.SECURITY_LOGOUT_URL_PATH.getValue();
-    private static final String SUCCESS_REDIRECT_URL = SecurityConstant.SECURITY_SUCCESS_REDIRECT_URL.getValue();
-    private static final String USERNAME_KEY = SecurityConstant.SECURITY_USERNAME_KEY.getValue();
-    private static final String PASSWORD_KEY = SecurityConstant.SECURITY_PASSWORD_KEY.getValue();
+    private static final String LOGIN_URL_PATH = "/view/auth/sign_in";
+    private static final String LOGIN_PROCESS_URL_PATH = "/auth/validation";
+    private static final String LOGOUT_URL_PATH = "/auth/sign_out";
+    private static final String SUCCESS_REDIRECT_URL = "/";
+    private static final String USERNAME_KEY = "id";
+    private static final String PASSWORD_KEY = "password";
 
     private final AuthRepository authRepository;
 

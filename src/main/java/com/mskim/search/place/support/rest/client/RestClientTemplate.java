@@ -15,18 +15,14 @@ import java.util.Collection;
 import java.util.Map;
 
 public abstract class RestClientTemplate {
-    private static final UriComponentsBuilder uriComponentsBuilder;
-
     private RestTemplate restTemplate;
     private HttpHeaders headers;
-
-    static {
-        uriComponentsBuilder = UriComponentsBuilder.newInstance();
-    }
+    private UriComponentsBuilder uriComponentsBuilder;
 
     protected RestClientTemplate() {
         this.restTemplate = new RestTemplate();
         this.headers = new HttpHeaders();
+        this.uriComponentsBuilder = UriComponentsBuilder.newInstance();
     }
 
     public RestClientTemplate setHeaders(Map<String, String> headers) {

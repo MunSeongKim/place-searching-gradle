@@ -30,9 +30,9 @@ public class KakaoSearchStrategy implements PlaceSearchableStrategy {
     private PlacePager placePager;
 
     @Autowired
-    public KakaoSearchStrategy(CacheManager cacheManager, KakaoMapSearchRestClient client) {
+    public KakaoSearchStrategy(CacheManager cacheManager, KakaoMapSearchRestClient kakaoMapSearchRestclient) {
         this.cacheManager = cacheManager;
-        this.client = client;
+        this.client = kakaoMapSearchRestclient;
     }
 
     @Override
